@@ -35,6 +35,15 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
         return list;
     }
 
+    public List<Cat> getBackup(){
+        return backupList;
+    }
+
+    public void filterList(List<Cat> filter){
+        list = filter;
+        notifyDataSetChanged();
+    }
+
     public void setOnItemListener(OnItemListener onItemListener) {
         this.onItemListener = onItemListener;
     }
@@ -65,6 +74,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         list.remove(cat);
+                        backupList.remove(cat);
                         notifyDataSetChanged();
                     }
                 });

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -17,8 +18,9 @@ import com.example.cat.model.CatAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements CatAdapter.OnItemListener {
+public class MainActivity extends AppCompatActivity implements CatAdapter.OnItemListener, SearchView.OnQueryTextListener {
 
     private Spinner spinner;
     private int[] images = {R.drawable.cat1, R.drawable.cat2, R.drawable.cat3,
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements CatAdapter.OnItem
     private CatAdapter catAdapter;
     private EditText editName, editPrice, editDescription;
     private Button btnAdd, btnEdit;
+    private SearchView searchView;
     private int position;
 
     @Override
@@ -40,9 +43,11 @@ public class MainActivity extends AppCompatActivity implements CatAdapter.OnItem
         editName = findViewById(R.id.editName);
         editDescription = findViewById(R.id.editDescription);
         editPrice = findViewById(R.id.editPrice);
+        searchView = findViewById(R.id.searchview);
 
         catAdapter = new CatAdapter(new ArrayList<>());
         catAdapter.setOnItemListener(this);
+        searchView.setOnQueryTextListener(this);
         GridLayoutManager manager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(manager);
 
@@ -97,11 +102,6 @@ public class MainActivity extends AppCompatActivity implements CatAdapter.OnItem
         });
     }
 
-//    private List<Cat> getList() {
-//        List<Cat> list = new ArrayList<>();
-//        list.add(new Cat(R.drawable.cat1, "Meo con", "Cute", 34));
-//        return list;
-//    }
 
     private void initView() {
         spinner = findViewById(R.id.spinner);
@@ -127,5 +127,30 @@ public class MainActivity extends AppCompatActivity implements CatAdapter.OnItem
             }
         }
         spinner.setSelection(p);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        filter(newText);
+        return false;
+    }
+
+    private void filter(String newText) {
+        List<Cat> filterName = new ArrayList<>();
+        for(Cat c:catAdapter.getBackup()){
+            if(c.getName().toLowerCase().contains(newText.toLowerCase())){
+                filterName.add(c);
+            }
+        }
+        if(filterName.isEmpty()){
+            Toast.makeText(this, "Khong ton tai", Toast.LENGTH_SHORT).show();
+        } else {
+            catAdapter.filterList(filterName);
+        }
     }
 }
