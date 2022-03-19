@@ -2,6 +2,7 @@ package com.example.cat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity implements CatAdapter.OnItem
         catAdapter = new CatAdapter(new ArrayList<>());
         catAdapter.setOnItemListener(this);
         searchView.setOnQueryTextListener(this);
-        GridLayoutManager manager = new GridLayoutManager(this, 1);
-        recyclerView.setLayoutManager(manager);
+        //GridLayoutManager manager = new GridLayoutManager(this, 1);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(catAdapter);
         btnAdd.setOnClickListener(new View.OnClickListener() {
