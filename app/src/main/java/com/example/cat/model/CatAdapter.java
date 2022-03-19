@@ -3,6 +3,7 @@ package com.example.cat.model;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
     private List<Cat> list;
-    private List<Cat> backupList;
+    private List<Cat> backupList = new ArrayList<>();
     private OnItemListener onItemListener;
 
     public CatAdapter(List<Cat> list) {
@@ -105,9 +106,10 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
     }
 
     public void add(Cat cat) {
-        backupList.add(cat);
-        list.add(cat);
-        notifyDataSetChanged();
+            backupList.add(cat);
+            list.add(cat);
+            notifyDataSetChanged();
+
     }
 
     public void edit(Cat cat, int positon) {
